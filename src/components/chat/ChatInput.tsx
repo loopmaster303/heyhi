@@ -1,4 +1,3 @@
-
 "use client";
 
 import type React from 'react';
@@ -14,7 +13,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
-import { AVAILABLE_POLLINATIONS_MODELS, AVAILABLE_RESPONSE_STYLES } from '@/config/chat-options';
+import { AVAILABLE_POLLINATIONS_MODELS, AVAILABLE_RESPONSE_STYLES, AVAILABLE_TTS_VOICES } from '@/config/chat-options';
 import type { PollinationsModel, ResponseStyle } from '@/config/chat-options';
 import { cn } from '@/lib/utils';
 
@@ -39,6 +38,8 @@ interface ChatInputProps {
   onToggleRecording: () => void;
   inputValue: string;
   onInputChange: (value: string) => void;
+  selectedVoice: string;
+  onVoiceChange: (voice: string) => void;
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({
@@ -57,6 +58,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
   onToggleRecording,
   inputValue,
   onInputChange,
+  selectedVoice,
+  onVoiceChange,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -109,6 +112,10 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
   const handleSelectStyle = (style: ResponseStyle) => {
     onStyleChange(style.name);
+  };
+
+  const handleSelectVoice = (voiceValue: string) => {
+    onVoiceChange(voiceValue);
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -209,6 +216,27 @@ const ChatInput: React.FC<ChatInputProps> = ({
                       {AVAILABLE_RESPONSE_STYLES.map((style) => (
                         <DropdownMenuItem key={style.name} onClick={() => handleSelectStyle(style)} className={selectedResponseStyleName === style.name ? "bg-accent" : ""}>
                           {style.name}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className={cn("rounded-lg px-2 py-1 h-auto", iconColorClass)} aria-label="Select Voice">
+                        <span className="text-xs font-medium">{AVAILABLE_TTS_VOICES.find(v => v.id === selectedVoice)?.name || 'Voice'}</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start">
+                      <DropdownMenuLabel>Select Voice</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      {AVAILABLE_TTS_VOICES.map((voice) => (
+                        <DropdownMenuItem
+                          key={voice.id}
+                          onClick={() => handleSelectVoice(voice.id)}
+                          className={selectedVoice === voice.id ? "bg-accent" : ""}
+                        >
+                          {voice.name}
                         </DropdownMenuItem>
                       ))}
                     </DropdownMenuContent>

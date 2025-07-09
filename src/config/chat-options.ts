@@ -135,16 +135,22 @@ User zum Nachdenken bringen, provozieren, motivieren, aber auch entertainen – 
 
 // Text-to-Speech (TTS) Voices
 export const AVAILABLE_TTS_VOICES: VoiceOption[] = [
-  { id: "antares", name: "Antares", icon: "speaker" },
-  { id: "arcturus", name: "Arcturus", icon: "speaker" },
-  { id: "canopus", name: "Canopus", icon: "speaker" },
-  { id: "procyon", name: "Procyon", icon: "speaker" },
-  { id: "regulus", name: "Regulus", icon: "speaker" },
-  { id: "vega", name: "Vega", icon: "speaker" },
-  { id: "capella", name: "Capella", icon: "speaker" },
-  { id: "deneb", name: "Deneb", icon: "speaker" },
-  { id: "sirius", name: "Sirius", icon: "speaker" },
-  { id: "almach", name: "Almach", icon: "speaker" },
+  // Deutsch – weiblich
+  { id: 'de-DE-Chirp3-HD-Achernar', name: 'Deutsch — Chirp3 HD Achernar (weiblich)', icon: 'speaker' },
+  { id: 'de-DE-Chirp3-HD-Aoede',      name: 'Deutsch — Chirp3 HD Aoede (weiblich)',      icon: 'speaker' },
+  { id: 'de-DE-Chirp3-HD-Despina',    name: 'Deutsch — Chirp3 HD Despina (weiblich)',    icon: 'speaker' },
+  // Deutsch – männlich
+  { id: 'de-DE-Chirp3-HD-Achird',     name: 'Deutsch — Chirp3 HD Achird (männlich)',     icon: 'speaker' },
+  { id: 'de-DE-Chirp3-HD-Charon',     name: 'Deutsch — Chirp3 HD Charon (männlich)',     icon: 'speaker' },
+  { id: 'de-DE-Chirp3-HD-Fenrir',     name: 'Deutsch — Chirp3 HD Fenrir (männlich)',     icon: 'speaker' },
+  // English (US) – female
+  { id: 'en-US-Chirp3-HD-Achernar',   name: 'English (US) — Chirp3 HD Achernar (female)', icon: 'speaker' },
+  { id: 'en-US-Chirp3-HD-Aoede',      name: 'English (US) — Chirp3 HD Aoede (female)',    icon: 'speaker' },
+  { id: 'en-US-Chirp3-HD-Kore',       name: 'English (US) — Chirp3 HD Kore (female)',     icon: 'speaker' },
+  // English (US) – male
+  { id: 'en-US-Chirp3-HD-Achird',     name: 'English (US) — Chirp3 HD Achird (male)',     icon: 'speaker' },
+  { id: 'en-US-Chirp3-HD-Charon',     name: 'English (US) — Chirp3 HD Charon (male)',     icon: 'speaker' },
+  { id: 'en-US-Chirp3-HD-Fenrir',     name: 'English (US) — Chirp3 HD Fenrir (male)',     icon: 'speaker' },
 ];
 
 // WICHTIG: Die Defaults müssen zu den IDs oben passen!

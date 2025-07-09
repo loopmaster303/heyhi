@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { ChatMessage, Conversation, ChatMessageContentPart } from '@/types';
 import { generateChatTitle } from '@/ai/flows/generate-chat-title';
 import { getPollinationsChatCompletion, type PollinationsChatInput } from '@/ai/flows/pollinations-chat-flow';
-import { DEFAULT_POLLINATIONS_MODEL_ID, DEFAULT_RESPONSE_STYLE_NAME, AVAILABLE_RESPONSE_STYLES, AVAILABLE_POLLINATIONS_MODELS } from '@/config/chat-options';
+import { DEFAULT_POLLINATIONS_MODEL_ID, DEFAULT_RESPONSE_STYLE_NAME, AVAILABLE_RESPONSE_STYLES, AVAILABLE_POLLINATIONS_MODELS, AVAILABLE_TTS_VOICES } from '@/config/chat-options';
 import { textToSpeech } from '@/ai/flows/tts-flow';
 import { speechToText } from '@/ai/flows/stt-flow';
 import useLocalStorageState from '@/hooks/useLocalStorageState';
@@ -457,20 +457,24 @@ export function useChatLogic({ userDisplayName, customSystemPrompt, onConversati
 }
 
 
-type ChatContextType = ReturnType<typeof useChatLogic>;
+type ChatContextType = ReturnType<typeof useChatLogic> & {
+  voice: string;
+  setVoice: (voice: string) => void;
+};
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [userDisplayName] = useLocalStorageState<string>("userDisplayName", "User");
     const [customSystemPrompt] = useLocalStorageState<string>("customSystemPrompt", "");
-    
-    const chat = useChatLogic({ userDisplayName, customSystemPrompt });
-    
+    const [voice, setVoice] = useState(AVAILABLE_TTS_VOICES[0].id);
+
+    const chatLogic = useChatLogic({ userDisplayName, customSystemPrompt, voice });
+    const contextValue: ChatContextType = { ...chatLogic, voice, setVoice };
     return (
-        <ChatContext.Provider value={chat}>
-            {children}
-        </ChatContext.Provider>
+      <ChatContext.Provider value={contextValue}>
+        {children}
+      </ChatContext.Provider>
     );
 };
 

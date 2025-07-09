@@ -65,6 +65,8 @@ export default function ChatInterface() {
             selectedResponseStyleName={chat.activeConversation.selectedResponseStyleName || DEFAULT_RESPONSE_STYLE_NAME}
             onModelChange={chat.handleModelChange}
             onStyleChange={chat.handleStyleChange}
+            selectedVoice={chat.voice}
+            onVoiceChange={chat.setVoice}
             isRecording={chat.isRecording}
             onToggleRecording={chat.handleToggleRecording}
             inputValue={chat.chatInputValue}

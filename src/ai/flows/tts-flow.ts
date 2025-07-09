@@ -39,12 +39,15 @@ async function toWav(
 const textToSpeechFlow = ai.defineFlow(
   {
     name: 'textToSpeechFlow',
-    inputSchema: z.string(),
+    inputSchema: z.object({
+      text: z.string(),
+      voice: z.string(),
+    }),
     outputSchema: z.object({
       audioDataUri: z.string(),
     }),
   },
-  async (text) => {
+  async ({ text, voice }) => {
     if (!text) {
       throw new Error('Input text cannot be empty.');
     }
@@ -55,7 +58,7 @@ const textToSpeechFlow = ai.defineFlow(
         responseModalities: ['AUDIO'],
         speechConfig: {
           voiceConfig: {
-            prebuiltVoiceConfig: {voiceName: 'Algenib'},
+            prebuiltVoiceConfig: { voiceName: voice },
           },
         },
       },
@@ -79,6 +82,6 @@ const textToSpeechFlow = ai.defineFlow(
   }
 );
 
-export async function textToSpeech(text: string): Promise<{ audioDataUri: string }> {
-    return textToSpeechFlow(text);
+export async function textToSpeech(text: string, voice: string): Promise<{ audioDataUri: string }> {
+    return textToSpeechFlow({ text, voice });
 }

@@ -1,4 +1,4 @@
-"use client";
+ "use client";
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useToast } from "@/hooks/use-toast";
@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { ChatMessage, Conversation, ChatMessageContentPart } from '@/types';
 import { generateChatTitle } from '@/ai/flows/generate-chat-title';
 import { getPollinationsChatCompletion, type PollinationsChatInput } from '@/ai/flows/pollinations-chat-flow';
-import { DEFAULT_POLLINATIONS_MODEL_ID, DEFAULT_RESPONSE_STYLE_NAME, AVAILABLE_RESPONSE_STYLES, AVAILABLE_POLLINATIONS_MODELS } from '@/config/chat-options';
+import { DEFAULT_POLLINATIONS_MODEL_ID, DEFAULT_RESPONSE_STYLE_NAME, AVAILABLE_RESPONSE_STYLES, AVAILABLE_POLLINATIONS_MODELS, AVAILABLE_TTS_VOICES } from '@/config/chat-options';
 import { textToSpeech } from '@/ai/flows/tts-flow';
 import { speechToText } from '@/ai/flows/stt-flow';
 
@@ -14,10 +14,16 @@ export interface UseChatLogicProps {
   userDisplayName?: string;
   customSystemPrompt?: string;
   onConversationStarted?: () => void;
+  voice?: string;
 }
 
 // This function contains the entire logic of the original useChat hook
-export function useChatLogic({ userDisplayName, customSystemPrompt, onConversationStarted }: UseChatLogicProps) {
+export function useChatLogic({
+  userDisplayName,
+  customSystemPrompt,
+  onConversationStarted,
+  voice = AVAILABLE_TTS_VOICES[0].id,
+}: UseChatLogicProps) {
     const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
     const [allConversations, setAllConversations] = useState<Conversation[]>([]);
     const [currentMessages, setCurrentMessages] = useState<ChatMessage[]>([]);
@@ -328,7 +334,7 @@ export function useChatLogic({ userDisplayName, customSystemPrompt, onConversati
       if (playingMessageId) return;
       setPlayingMessageId(messageId);
       try {
-        const { audioDataUri } = await textToSpeech(text);
+        const { audioDataUri } = await textToSpeech(text, voice);
         const audio = new Audio(audioDataUri);
         audio.play();
         audio.onended = () => {
@@ -343,7 +349,7 @@ export function useChatLogic({ userDisplayName, customSystemPrompt, onConversati
         toast({ title: "Text-to-Speech Error", description: "Could not generate audio.", variant: "destructive" });
         setPlayingMessageId(null);
       }
-    }, [playingMessageId, toast]);
+    }, [playingMessageId, toast, voice]);
   
     const handleStartRecording = useCallback(async () => {
       if (isRecording) return;
